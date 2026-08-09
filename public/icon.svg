@@ -5,7 +5,7 @@
     <path d="M64 0v512M128 0v512M192 0v512M256 0v512M320 0v512M384 0v512M448 0v512"/>
     <path d="M0 64h512M0 128h512M0 192h512M0 256h512M0 320h512M0 384h512M0 448h512"/>
   </g>
-  <path d="M96 92h72v246h92v76H96z" fill="#f2f1eb"/>
-  <path d="M420 124h-65c-31 0-49 20-49 51 0 28 16 44 47 54l29 9c31 10 48 30 48 63 0 47-24 75-66 75h-58" fill="none" stroke="#f2f1eb" stroke-width="64" stroke-linecap="square" stroke-linejoin="round"/>
-  <path d="M283 88h14l-55 328h-14z" fill="#baff00"/>
+  <path id="mark-l" d="M84 92h72v246h46v76H84z" fill="#f2f1eb"/>
+  <path id="mark-s" d="M426 124h-65c-31 0-49 20-49 51 0 28 16 44 47 54l29 9c31 10 48 30 48 63 0 47-24 75-66 75h-58" fill="none" stroke="#f2f1eb" stroke-width="64" stroke-linecap="square" stroke-linejoin="round"/>
+  <path id="mark-slash" d="M270 92h14l-54 324h-14z" fill="#baff00"/>
 </svg>

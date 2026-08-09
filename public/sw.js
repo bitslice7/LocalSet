@@ -1,6 +1,6 @@
 const CACHE_PREFIX = "localset";
 const LEGACY_CACHE_PREFIXES = ["localfit-", "form-daily-"];
-const CACHE_VERSION = "v4";
+const CACHE_VERSION = "v5";
 const SHELL_CACHE = `${CACHE_PREFIX}-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}-runtime-${CACHE_VERSION}`;
 const ACTIVE_CACHES = new Set([SHELL_CACHE, RUNTIME_CACHE]);
