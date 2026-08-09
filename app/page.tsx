@@ -1202,15 +1202,17 @@ export default function Home() {
         ] as const).map(([value, number, label]) => (
           <button
             key={value}
+            type="button"
             className={tab === value ? "active" : ""}
             onClick={() => {
               setTab(value);
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
             }}
             aria-current={tab === value ? "page" : undefined}
           >
-            <span>{number}</span>
-            {label}
+            <span className="nav-index" aria-hidden="true">{number}</span>
+            <span className="nav-label">{label}</span>
           </button>
         ))}
       </nav>

@@ -119,6 +119,27 @@ test("declares installable LocalSet metadata and correctly sized brand assets", 
   assert.match(styles, /\.app-mark i\s*\{[^}]*justify-self:\s*center/);
 });
 
+test("keeps the primary dock readable and clear of iPhone safe areas", async () => {
+  const [page, styles] = await Promise.all([
+    readFile(fromRoot("app/page.tsx"), "utf8"),
+    readFile(fromRoot("app/globals.css"), "utf8"),
+  ]);
+
+  assert.match(page, /<nav className="bottom-nav" aria-label="Primary navigation">/);
+  assert.match(page, /\["today", "01", "Today"\][\s\S]*\["plan", "02", "Plan"\][\s\S]*\["progress", "03", "Progress"\][\s\S]*\["settings", "04", "Settings"\]/);
+  assert.match(page, /type="button"[\s\S]*aria-current=\{tab === value \? "page" : undefined\}/);
+  assert.match(page, /className="nav-index" aria-hidden="true"/);
+  assert.match(page, /className="nav-label">\{label\}<\/span>/);
+  assert.match(page, /prefers-reduced-motion:\s*reduce/);
+  assert.match(styles, /\.app-shell\s*\{[^}]*--bottom-nav-reserve:\s*104px[^}]*min-height:\s*100dvh[^}]*safe-area-inset-bottom/);
+  assert.match(styles, /\.bottom-nav\s*\{[^}]*position:\s*fixed[^}]*safe-area-inset-bottom[^}]*safe-area-inset-left[^}]*safe-area-inset-right/);
+  assert.match(styles, /\.bottom-nav button\s*\{[^}]*min-width:\s*56px[^}]*min-height:\s*56px/);
+  assert.match(styles, /\.bottom-nav button\.active::before\s*\{[^}]*height:\s*3px[^}]*background:\s*var\(--ink\)/);
+  assert.doesNotMatch(styles, /\.bottom-nav[^}]*var\(--success\)/);
+  assert.match(styles, /\.finish-dock\s*\{[^}]*bottom:\s*calc\(var\(--bottom-nav-reserve\)/);
+  assert.match(styles, /\.toast\s*\{[^}]*bottom:\s*calc\(var\(--bottom-nav-reserve\)/);
+});
+
 test("registers a versioned service worker without caching account endpoints", async () => {
   const [page, serviceWorker] = await Promise.all([
     readFile(fromRoot("app/page.tsx"), "utf8"),
