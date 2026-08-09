@@ -107,8 +107,12 @@ test("declares installable LocalSet metadata and correctly sized brand assets", 
   assert.match(layout, /appleWebApp:\s*\{/);
   assert.match(layout, /viewportFit:\s*["']cover["']|viewport-fit=cover/);
   assert.doesNotMatch(layout, /Starter Project|Your site is taking shape/);
-  assert.match(iconSvg, /id="mark-l"\s+d="M84 92h72v246h46v76H84z"/);
-  assert.match(iconSvg, /id="mark-slash"\s+d="M270 92h14l-54 324h-14z"/);
+  assert.match(iconSvg, /<title>LocalSet L slash S monogram<\/title>/);
+  assert.match(iconSvg, /<rect[^>]+fill="#000000"/);
+  assert.match(iconSvg, /id="mark-l"\s+d="M64 64h64v288h32v64H64z"/);
+  assert.match(iconSvg, /id="mark-slash"\s+d="M256 64h32l-64 352h-32z"/);
+  assert.match(iconSvg, /id="mark-(?:l|s|slash)"[^>]+(?:fill|stroke)="#ffffff"/);
+  assert.doesNotMatch(iconSvg, /#baff00|#252525|<g\b/);
   assert.doesNotMatch(iconSvg, /M96 92h72v246h92v76H96z|M283 88h14l-55 328h-14z/);
   assert.match(styles, /\.app-mark\s*\{[^}]*grid-template-columns:\s*auto 0\.55em auto/);
   assert.match(styles, /\.app-mark\s*\{[^}]*column-gap:\s*0\.15em/);
@@ -123,7 +127,7 @@ test("registers a versioned service worker without caching account endpoints", a
 
   assert.match(page, /serviceWorker\.register\(["']\/sw\.js["']\)/);
   assert.match(serviceWorker, /CACHE_VERSION\s*=\s*["']v\d+["']/);
-  assert.match(serviceWorker, /CACHE_VERSION\s*=\s*["']v5["']/);
+  assert.match(serviceWorker, /CACHE_VERSION\s*=\s*["']v6["']/);
   assert.match(serviceWorker, /CACHE_PREFIX\s*=\s*["']localset["']/);
   assert.match(serviceWorker, /LEGACY_CACHE_PREFIXES\s*=\s*\[[^\]]*["']localfit-["'][^\]]*["']form-daily-["']/);
   assert.match(serviceWorker, /cacheAppShell\(cache\)/);
@@ -233,6 +237,7 @@ test(
     for (const path of [
       "manifest.webmanifest",
       "sw.js",
+      "icon.svg",
       "icon-180.png",
       "icon-192.png",
       "icon-512.png",
