@@ -519,6 +519,30 @@ function AppMark() {
   );
 }
 
+function NavIcon({ tab }: { tab: Tab }) {
+  const iconProps = {
+    className: "nav-icon",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
+
+  if (tab === "today") {
+    return <svg {...iconProps}><path d="M5 5.5h14v14H5zM8 2.5v5M16 2.5v5M5 9h14" /></svg>;
+  }
+  if (tab === "plan") {
+    return <svg {...iconProps}><path d="M9 6h10M9 12h10M9 18h10M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></svg>;
+  }
+  if (tab === "progress") {
+    return <svg {...iconProps}><path d="M4 19V5M4 19h16M7 15l4-4 3 2 5-7" /></svg>;
+  }
+  return <svg {...iconProps}><path d="M4 7h3M11 7h9M4 17h9M17 17h3" /><circle cx="9" cy="7" r="2" /><circle cx="15" cy="17" r="2" /></svg>;
+}
+
 function FormFigure({ src, name }: { src?: string; name: string }) {
   if (!src) return null;
   return (
@@ -1195,11 +1219,11 @@ export default function Home() {
 
       <nav className="bottom-nav" aria-label="Primary navigation">
         {([
-          ["today", "01", "Today"],
-          ["plan", "02", "Plan"],
-          ["progress", "03", "Progress"],
-          ["settings", "04", "Settings"],
-        ] as const).map(([value, number, label]) => (
+          ["today", "Today"],
+          ["plan", "Plan"],
+          ["progress", "Progress"],
+          ["settings", "Settings"],
+        ] as const).map(([value, label]) => (
           <button
             key={value}
             type="button"
@@ -1211,7 +1235,7 @@ export default function Home() {
             }}
             aria-current={tab === value ? "page" : undefined}
           >
-            <span className="nav-index" aria-hidden="true">{number}</span>
+            <NavIcon tab={value} />
             <span className="nav-label">{label}</span>
           </button>
         ))}

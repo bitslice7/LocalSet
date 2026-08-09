@@ -91,10 +91,10 @@ h3,
 }
 
 .app-shell {
-  --bottom-nav-reserve: 104px;
+  --bottom-nav-height: 80px;
   min-height: 100vh;
   min-height: 100dvh;
-  padding-bottom: calc(var(--bottom-nav-reserve) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom, 0px));
 }
 
 .app-main {
@@ -737,7 +737,7 @@ h3,
 .finish-dock {
   position: sticky;
   z-index: 20;
-  bottom: calc(var(--bottom-nav-reserve) - 16px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(var(--bottom-nav-height) + 8px + env(safe-area-inset-bottom, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -843,39 +843,36 @@ h3,
   display: grid;
   grid-template-columns: repeat(4, minmax(56px, 1fr));
   width: min(520px, calc(100% - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
-  padding: 4px;
+  padding: 5px;
   border: 1px solid var(--ink);
-  background: var(--ink);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+  background: color-mix(in srgb, var(--white) 94%, transparent);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(20px) saturate(1.2);
   transform: translateX(-50%);
 }
 
 .bottom-nav button {
   position: relative;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   min-width: 56px;
   min-height: 56px;
   padding: 5px 8px 4px;
   background: transparent;
-  color: #ecebe6;
+  color: var(--muted);
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-align: center;
-  text-transform: uppercase;
 }
 
-.bottom-nav button + button {
-  border-left: 1px solid #30302e;
-}
-
-.bottom-nav .nav-index {
-  color: #85857f;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 7px;
+.bottom-nav .nav-icon {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 auto;
   line-height: 1;
 }
 
@@ -884,37 +881,23 @@ h3,
 }
 
 .bottom-nav button.active {
-  background: var(--white);
-  color: var(--ink);
-}
-
-.bottom-nav button.active::before {
-  position: absolute;
-  top: 0;
-  right: 9px;
-  left: 9px;
-  height: 3px;
   background: var(--ink);
-  content: "";
-}
-
-.bottom-nav button.active .nav-index {
-  color: var(--muted);
+  color: var(--white);
 }
 
 .bottom-nav button:focus-visible {
   z-index: 1;
-  outline: 2px solid var(--white);
+  outline: 2px solid var(--ink);
   outline-offset: -3px;
 }
 
 .bottom-nav button.active:focus-visible {
-  outline-color: var(--ink);
+  outline-color: var(--white);
 }
 
 @media (hover: hover) {
   .bottom-nav button:not(.active):hover {
-    background: #20201e;
+    background: var(--soft);
   }
 }
 
@@ -1889,7 +1872,7 @@ h3,
   position: fixed;
   z-index: 90;
   left: 50%;
-  bottom: calc(var(--bottom-nav-reserve) - 12px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(var(--bottom-nav-height) + 14px + env(safe-area-inset-bottom, 0px));
   max-width: min(520px, calc(100% - 32px));
   padding: 14px 18px;
   background: var(--ink);
@@ -1967,7 +1950,7 @@ h3,
 
 @media (max-width: 680px) {
   .app-shell {
-    padding-bottom: calc(var(--bottom-nav-reserve) + env(safe-area-inset-bottom, 0px));
+    --bottom-nav-height: 65px;
   }
 
   .view {
@@ -2139,7 +2122,7 @@ h3,
   }
 
   .finish-dock {
-    bottom: calc(var(--bottom-nav-reserve) - 16px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(var(--bottom-nav-height) + 8px + env(safe-area-inset-bottom, 0px));
     display: grid;
     margin: 14px -8px;
     padding: 12px;
@@ -2175,20 +2158,43 @@ h3,
   }
 
   .bottom-nav {
-    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    right: 0;
+    bottom: 0;
+    left: 0;
     grid-template-columns: repeat(4, minmax(44px, 1fr));
-    width: min(520px, calc(100% - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
+    width: 100%;
+    padding: 6px max(12px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+    border-width: 1px 0 0;
+    background: color-mix(in srgb, var(--paper) 94%, transparent);
+    box-shadow: 0 -10px 32px rgba(0, 0, 0, 0.1);
+    transform: none;
   }
 
   .bottom-nav button {
     min-width: 44px;
-    min-height: 56px;
-    padding: 5px 3px 4px;
+    min-height: 52px;
+    padding: 4px 2px 3px;
     font-size: 10px;
   }
 
-  .bottom-nav .nav-index {
-    font-size: 7px;
+  .bottom-nav button.active {
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .bottom-nav button.active::before {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 28px;
+    height: 2px;
+    background: var(--ink);
+    content: "";
+    transform: translateX(-50%);
+  }
+
+  .bottom-nav button.active:focus-visible {
+    outline-color: var(--ink);
   }
 
   .completion-card {
