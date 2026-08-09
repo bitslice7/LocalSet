@@ -79,9 +79,11 @@ test("includes the MIT license and creator website in Settings", async () => {
 });
 
 test("declares installable LocalSet metadata and correctly sized brand assets", async () => {
-  const [manifestText, layout, icon180, icon192, icon512, ogImage] = await Promise.all([
+  const [manifestText, layout, iconSvg, styles, icon180, icon192, icon512, ogImage] = await Promise.all([
     readFile(fromRoot("public/manifest.webmanifest"), "utf8"),
     readFile(fromRoot("app/layout.tsx"), "utf8"),
+    readFile(fromRoot("public/icon.svg"), "utf8"),
+    readFile(fromRoot("app/globals.css"), "utf8"),
     readFile(fromRoot("public/icon-180.png")),
     readFile(fromRoot("public/icon-192.png")),
     readFile(fromRoot("public/icon-512.png")),
@@ -105,6 +107,12 @@ test("declares installable LocalSet metadata and correctly sized brand assets", 
   assert.match(layout, /appleWebApp:\s*\{/);
   assert.match(layout, /viewportFit:\s*["']cover["']|viewport-fit=cover/);
   assert.doesNotMatch(layout, /Starter Project|Your site is taking shape/);
+  assert.match(iconSvg, /id="mark-l"\s+d="M84 92h72v246h46v76H84z"/);
+  assert.match(iconSvg, /id="mark-slash"\s+d="M270 92h14l-54 324h-14z"/);
+  assert.doesNotMatch(iconSvg, /M96 92h72v246h92v76H96z|M283 88h14l-55 328h-14z/);
+  assert.match(styles, /\.app-mark\s*\{[^}]*grid-template-columns:\s*auto 0\.55em auto/);
+  assert.match(styles, /\.app-mark\s*\{[^}]*column-gap:\s*0\.15em/);
+  assert.match(styles, /\.app-mark i\s*\{[^}]*justify-self:\s*center/);
 });
 
 test("registers a versioned service worker without caching account endpoints", async () => {
@@ -115,6 +123,7 @@ test("registers a versioned service worker without caching account endpoints", a
 
   assert.match(page, /serviceWorker\.register\(["']\/sw\.js["']\)/);
   assert.match(serviceWorker, /CACHE_VERSION\s*=\s*["']v\d+["']/);
+  assert.match(serviceWorker, /CACHE_VERSION\s*=\s*["']v5["']/);
   assert.match(serviceWorker, /CACHE_PREFIX\s*=\s*["']localset["']/);
   assert.match(serviceWorker, /LEGACY_CACHE_PREFIXES\s*=\s*\[[^\]]*["']localfit-["'][^\]]*["']form-daily-["']/);
   assert.match(serviceWorker, /cacheAppShell\(cache\)/);

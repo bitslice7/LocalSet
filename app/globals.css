@@ -127,19 +127,20 @@ h3,
 
 .app-mark {
   display: inline-grid;
-  grid-template-columns: auto 7px auto;
+  grid-template-columns: auto 0.55em auto;
   align-items: center;
-  gap: 2px;
+  column-gap: 0.15em;
   font-family: "Arial Black", Arial, sans-serif;
   font-size: 20px;
   font-style: normal;
   font-weight: 900;
-  letter-spacing: -0.12em;
+  letter-spacing: 0;
   line-height: 1;
 }
 
 .app-mark i {
   display: block;
+  justify-self: center;
   width: 3px;
   height: 24px;
   background: currentColor;
