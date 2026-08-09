@@ -119,6 +119,33 @@ test("declares installable LocalSet metadata and correctly sized brand assets", 
   assert.match(styles, /\.app-mark i\s*\{[^}]*justify-self:\s*center/);
 });
 
+test("keeps the primary dock readable and clear of iPhone safe areas", async () => {
+  const [page, styles] = await Promise.all([
+    readFile(fromRoot("app/page.tsx"), "utf8"),
+    readFile(fromRoot("app/globals.css"), "utf8"),
+  ]);
+  const mobileStyles = styles.slice(styles.indexOf("@media (max-width: 680px)"));
+  const baseDockStyles = styles.slice(styles.indexOf(".bottom-nav {"), styles.indexOf(".completion-card {"));
+  const mobileDockStyles = mobileStyles.slice(mobileStyles.indexOf(".bottom-nav {"), mobileStyles.indexOf(".completion-card {"));
+
+  assert.match(page, /<nav className="bottom-nav" aria-label="Primary navigation">/);
+  assert.match(page, /\["today", "Today"\][\s\S]*\["plan", "Plan"\][\s\S]*\["progress", "Progress"\][\s\S]*\["settings", "Settings"\]/);
+  assert.match(page, /type="button"[\s\S]*aria-current=\{tab === value \? "page" : undefined\}/);
+  assert.match(page, /function NavIcon[\s\S]*className:\s*"nav-icon"[\s\S]*"aria-hidden":\s*true/);
+  assert.match(page, /className="nav-label">\{label\}<\/span>/);
+  assert.match(page, /prefers-reduced-motion:\s*reduce/);
+  assert.match(styles, /\.app-shell\s*\{[^}]*--bottom-nav-height:\s*80px[^}]*min-height:\s*100dvh[^}]*safe-area-inset-bottom/);
+  assert.match(styles, /\.bottom-nav\s*\{[^}]*position:\s*fixed[^}]*safe-area-inset-bottom[^}]*safe-area-inset-left[^}]*safe-area-inset-right/);
+  assert.match(styles, /\.bottom-nav button\s*\{[^}]*min-width:\s*56px[^}]*min-height:\s*56px/);
+  assert.match(mobileStyles, /\.app-shell\s*\{[^}]*--bottom-nav-height:\s*65px/);
+  assert.match(mobileStyles, /\.bottom-nav\s*\{[^}]*bottom:\s*0[^}]*width:\s*100%[^}]*safe-area-inset-bottom/);
+  assert.match(mobileStyles, /\.bottom-nav button\s*\{[^}]*min-width:\s*44px[^}]*min-height:\s*52px/);
+  assert.match(mobileStyles, /\.bottom-nav button\.active::before\s*\{[^}]*height:\s*2px[^}]*background:\s*var\(--ink\)/);
+  assert.doesNotMatch(`${baseDockStyles}${mobileDockStyles}`, /var\(--success\)|#d9ff45|#baff00/i);
+  assert.match(styles, /\.finish-dock\s*\{[^}]*bottom:\s*calc\(var\(--bottom-nav-height\)/);
+  assert.match(styles, /\.toast\s*\{[^}]*bottom:\s*calc\(var\(--bottom-nav-height\)/);
+});
+
 test("registers a versioned service worker without caching account endpoints", async () => {
   const [page, serviceWorker] = await Promise.all([
     readFile(fromRoot("app/page.tsx"), "utf8"),
